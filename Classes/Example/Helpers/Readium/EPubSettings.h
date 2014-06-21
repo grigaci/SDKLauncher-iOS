@@ -1,5 +1,5 @@
 //
-//  EPubSettings.m
+//  EPubSettings.h
 //  SDKLauncher-iOS
 //
 //  Created by Shane Meyer on 7/27/13.
@@ -27,91 +27,30 @@
 //  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
 //  OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#import "EPubSettings.h"
-#import "Settings.h"
+#import <Foundation/Foundation.h>
 
+extern NSString * const kSDKLauncherEPubSettingsDidChange;
 
-#define kKeyColumnGap @"columnGap"
-#define kKeyFontScale @"fontSize"
-#define kKeyIsSyntheticSpread @"isSyntheticSpread"
+typedef enum {
+	EPubSettingsScrollAuto,
+	EPubSettingsScrollContinuous,
+	EPubSettingsScrollDoc,
+} EPubSettingsScroll;
 
+typedef enum {
+	EPubSettingsSyntheticSpreadAuto,
+	EPubSettingsSyntheticSpreadDouble,
+	EPubSettingsSyntheticSpreadSingle,
+} EPubSettingsSyntheticSpread;
 
-NSString * const kSDKLauncherEPubSettingsDidChange = @"SDKLauncherEPubSettingsDidChange";
+@interface EPubSettings : NSObject
 
+@property (nonatomic, assign) CGFloat columnGap;
+@property (nonatomic, readonly) NSDictionary *dictionary;
+@property (nonatomic, assign) CGFloat fontScale;
+@property (nonatomic, assign) EPubSettingsScroll scroll;
+@property (nonatomic, assign) EPubSettingsSyntheticSpread syntheticSpread;
 
-@interface EPubSettings ()
-
-- (void)postNotification;
-
-@end
-
-
-@implementation EPubSettings
-
-
-- (CGFloat)columnGap {
-	return [Settings shared].columnGap;
-}
-
-
-- (NSDictionary *)dictionary {
-	return @{
-		kKeyColumnGap : [NSNumber numberWithInt:round(self.columnGap)],
-		kKeyFontScale : [NSNumber numberWithInt:round(100.0 * self.fontScale)],
-		kKeyIsSyntheticSpread : [NSNumber numberWithBool:self.isSyntheticSpread],
-	};
-}
-
-
-- (CGFloat)fontScale {
-	return [Settings shared].fontScale;
-}
-
-
-- (BOOL)isSyntheticSpread {
-	return [Settings shared].isSyntheticSpread;
-}
-
-
-- (void)postNotification {
-	[[NSNotificationCenter defaultCenter] postNotificationName:
-		kSDKLauncherEPubSettingsDidChange object:self];
-}
-
-
-- (void)setColumnGap:(CGFloat)columnGap {
-	if ([Settings shared].columnGap != columnGap) {
-		[Settings shared].columnGap = columnGap;
-		[self postNotification];
-	}
-}
-
-
-- (void)setFontScale:(CGFloat)fontScale {
-	if ([Settings shared].fontScale != fontScale) {
-		[Settings shared].fontScale = fontScale;
-		[self postNotification];
-	}
-}
-
-
-- (void)setIsSyntheticSpread:(BOOL)isSyntheticSpread {
-	if ([Settings shared].isSyntheticSpread != isSyntheticSpread) {
-		[Settings shared].isSyntheticSpread = isSyntheticSpread;
-		[self postNotification];
-	}
-}
-
-
-+ (EPubSettings *)shared {
-	static EPubSettings *shared = nil;
-
-	if (shared == nil) {
-		shared = [[EPubSettings alloc] init];
-	}
-
-	return shared;
-}
-
++ (EPubSettings *)shared;
 
 @end

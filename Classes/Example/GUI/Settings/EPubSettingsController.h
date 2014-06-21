@@ -1,5 +1,5 @@
 //
-//  EPubSettings.h
+//  EPubSettingsController.h
 //  SDKLauncher-iOS
 //
 //  Created by Shane Meyer on 7/27/13.
@@ -27,17 +27,8 @@
 //  OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED 
 //  OF THE POSSIBILITY OF SUCH DAMAGE.
 
-#import <Foundation/Foundation.h>
+#import "BaseViewController.h"
 
-extern NSString * const kSDKLauncherEPubSettingsDidChange;
-
-@interface EPubSettings : NSObject
-
-@property (nonatomic, assign) CGFloat columnGap;
-@property (nonatomic, readonly) NSDictionary *dictionary;
-@property (nonatomic, assign) CGFloat fontScale;
-@property (nonatomic, assign) BOOL isSyntheticSpread;
-
-+ (EPubSettings *)shared;
+@interface EPubSettingsController : BaseViewController
 
 @end
