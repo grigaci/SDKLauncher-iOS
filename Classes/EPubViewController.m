@@ -386,11 +386,7 @@
 	else {
 		label.text = LocStr(@"PAGE_X_OF_Y", m_currentPageIndex + 1, m_currentPageCount);
 
-		itemNext.enabled = !(
-			(m_currentSpineItemIndex + 1 == m_package.spineItems.count) &&
-			(m_currentPageIndex + m_currentOpenPageCount + 1 > m_currentPageCount)
-		);
-
+		itemNext.enabled = m_canNavigateForward;
 		itemPrev.enabled = !(m_currentSpineItemIndex == 0 && m_currentPageIndex == 0);
 	}
 
@@ -566,22 +562,47 @@
 				m_currentPageProgressionIsLTR = YES;
 			}
 
-			m_currentOpenPageCount = 0;
+            NSArray *openPagesArray = [dict objectForKey:@"openPages"];
+            NSDictionary *lastOpenSpineDictionary = nil;
 
-			for (NSDictionary *pageDict in [dict objectForKey:@"openPages"]) {
-				m_currentOpenPageCount++;
-
-				if (m_currentOpenPageCount == 1) {
+			for (NSUInteger index = 0; index < [openPagesArray count]; index++) {
+                NSDictionary *pageDict = openPagesArray[index];
+                NSNumber *spineItemIndexNumber = [pageDict objectForKey:@"spineItemIndex"];
+                
+				if (index == 0) {
 					NSNumber *number = [pageDict objectForKey:@"spineItemPageCount"];
 					m_currentPageCount = number.intValue;
-
+                    
 					number = [pageDict objectForKey:@"spineItemPageIndex"];
 					m_currentPageIndex = number.intValue;
-
-					number = [pageDict objectForKey:@"spineItemIndex"];
-					m_currentSpineItemIndex = number.intValue;
+                    
+					m_currentSpineItemIndex = spineItemIndexNumber.intValue;
 				}
+
+                if (!lastOpenSpineDictionary) {
+                    lastOpenSpineDictionary = pageDict;
+                }
+                else {
+                    NSNumber *lastOpenSpineNumber = lastOpenSpineDictionary[@"spineItemIndex"];
+                    if ([lastOpenSpineNumber unsignedIntegerValue] < [spineItemIndexNumber unsignedIntegerValue]) {
+                        lastOpenSpineDictionary = pageDict;
+                    }
+                }
 			}
+
+            // Check if it's possible to navigate forward
+            NSNumber *spineItemIndexNumber = lastOpenSpineDictionary[@"spineItemIndex"];
+            NSUInteger spineItemIndex = [spineItemIndexNumber unsignedIntegerValue];
+            if (spineItemIndex + 1 < [m_package.spineItems count]) {
+                m_canNavigateForward = YES;
+            }
+            else {
+                NSNumber *countPagesInSpineNumber = lastOpenSpineDictionary[@"spineItemPageCount"];
+                NSNumber *currentPageIndexInSpineNumber = lastOpenSpineDictionary[@"spineItemPageIndex"];
+                NSUInteger countPagesInSpine = [countPagesInSpineNumber unsignedIntegerValue];
+                NSUInteger currentPageIndexInSpine = [currentPageIndexInSpineNumber unsignedIntegerValue];
+                m_canNavigateForward = currentPageIndexInSpine + 1 != countPagesInSpine;
+            }
 
 			m_webView.hidden = NO;
 			[self updateToolbar];
