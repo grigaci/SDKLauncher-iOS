@@ -99,6 +99,8 @@
 		34E12BA9180301A2004DCB68 /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 34E12B9C180301A2004DCB68 /* Icon-72@2x.png */; };
 		34E12BAA180301A2004DCB68 /* Icon-76.png in Resources */ = {isa = PBXBuildFile; fileRef = 34E12B9D180301A2004DCB68 /* Icon-76.png */; };
 		34E12BAB180301A2004DCB68 /* Icon-76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 34E12B9E180301A2004DCB68 /* Icon-76@2x.png */; };
+		65B2D58D199793B1001F38BD /* EPubOpenPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 65B2D58A199793B1001F38BD /* EPubOpenPage.m */; };
+		65B2D58E199793B1001F38BD /* EPubReadingOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 65B2D58C199793B1001F38BD /* EPubReadingOptions.m */; };
 		85DE51A117FDDCAC00F55130 /* page-blanche-20130322.epub in Resources */ = {isa = PBXBuildFile; fileRef = 85DE51A017FDDCAC00F55130 /* page-blanche-20130322.epub */; };
 		A250D5FFC597F4E5EB74D3AC /* epub30-test-0120-20131022.epub in Resources */ = {isa = PBXBuildFile; fileRef = A250D58D34D67FC218608A1F /* epub30-test-0120-20131022.epub */; };
 		A250D8E19073D0C5B921BA5F /* epub30-test-0220-20131022.epub in Resources */ = {isa = PBXBuildFile; fileRef = A250D54A5C423A86C6099037 /* epub30-test-0220-20131022.epub */; };
@@ -286,6 +288,10 @@
 		34E12B9C180301A2004DCB68 /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72@2x.png"; sourceTree = "<group>"; };
 		34E12B9D180301A2004DCB68 /* Icon-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76.png"; sourceTree = "<group>"; };
 		34E12B9E180301A2004DCB68 /* Icon-76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76@2x.png"; sourceTree = "<group>"; };
+		65B2D589199793B1001F38BD /* EPubOpenPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPubOpenPage.h; sourceTree = "<group>"; };
+		65B2D58A199793B1001F38BD /* EPubOpenPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPubOpenPage.m; sourceTree = "<group>"; };
+		65B2D58B199793B1001F38BD /* EPubReadingOptions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EPubReadingOptions.h; sourceTree = "<group>"; };
+		65B2D58C199793B1001F38BD /* EPubReadingOptions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EPubReadingOptions.m; sourceTree = "<group>"; };
 		85DE51A017FDDCAC00F55130 /* page-blanche-20130322.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "page-blanche-20130322.epub"; sourceTree = "<group>"; };
 		A250D54A5C423A86C6099037 /* epub30-test-0220-20131022.epub */ = {isa = PBXFileReference; lastKnownFileType = file.epub; path = "epub30-test-0220-20131022.epub"; sourceTree = "<group>"; };
 		A250D58D34D67FC218608A1F /* epub30-test-0120-20131022.epub */ = {isa = PBXFileReference; lastKnownFileType = file.epub; path = "epub30-test-0120-20131022.epub"; sourceTree = "<group>"; };
@@ -560,6 +566,10 @@
 				340535B516BC669C00D4A802 /* ContainerList.m */,
 				340535AB16BC5F4700D4A802 /* ContainerListController.h */,
 				340535AC16BC5F4700D4A802 /* ContainerListController.m */,
+				65B2D589199793B1001F38BD /* EPubOpenPage.h */,
+				65B2D58A199793B1001F38BD /* EPubOpenPage.m */,
+				65B2D58B199793B1001F38BD /* EPubReadingOptions.h */,
+				65B2D58C199793B1001F38BD /* EPubReadingOptions.m */,
 				34C4064617A451D000354C33 /* EPubSettings.h */,
 				34C4064717A451D100354C33 /* EPubSettings.m */,
 				34C4064117A43A1700354C33 /* EPubSettingsController.h */,
@@ -806,6 +816,7 @@
 				34212FD318F0649500A9109F /* DDFileLogger.m in Sources */,
 				34212FBA18F0649500A9109F /* RDPackageResourceServer.m in Sources */,
 				34C4064317A43A1700354C33 /* EPubSettingsController.m in Sources */,
+				65B2D58D199793B1001F38BD /* EPubOpenPage.m in Sources */,
 				3411DF03175FACC000FCE6D9 /* EPubViewController.m in Sources */,
 				34212FB418F0649500A9109F /* RDMediaOverlaysSmilModel.mm in Sources */,
 				34212FB318F0649500A9109F /* RDContainer.mm in Sources */,
@@ -821,6 +832,7 @@
 				34212FB518F0649500A9109F /* RDNavigationElement.mm in Sources */,
 				34CE0B1F1720D8FE00F55192 /* NavigationElementController.m in Sources */,
 				34212FC218F0649500A9109F /* HTTPMessage.m in Sources */,
+				65B2D58E199793B1001F38BD /* EPubReadingOptions.m in Sources */,
 				34212FBF18F0649500A9109F /* DDRange.m in Sources */,
 				34212FD118F0649500A9109F /* DDAbstractDatabaseLogger.m in Sources */,
 				341652A316C2F85700AFDB8B /* PackageMetadataController.m in Sources */,

@@ -37,9 +37,12 @@
 #import "RDPackage.h"
 #import "RDPackageResourceServer.h"
 #import "RDSpineItem.h"
-
+#import "EPubReadingOptions.h"
+#import "EPubOpenPage.h"
 
 @interface EPubViewController ()
+
+@property (nonatomic, strong) EPubReadingOptions *epubReadingOptions;
 
 - (void)passSettingsToJavaScript;
 - (void)updateNavigationItems;
@@ -349,18 +352,18 @@
 	static NSString *arrowR = @"\u2192";
 
 	UIBarButtonItem *itemNext = [[UIBarButtonItem alloc]
-		initWithTitle:m_currentPageProgressionIsLTR ? arrowR : arrowL
+		initWithTitle:self.epubReadingOptions.isPageProgressionLTR ? arrowR : arrowL
 		style:UIBarButtonItemStylePlain
 		target:self
 		action:@selector(onClickNext)];
 
 	UIBarButtonItem *itemPrev = [[UIBarButtonItem alloc]
-		initWithTitle:m_currentPageProgressionIsLTR ? arrowL : arrowR
+		initWithTitle:self.epubReadingOptions.isPageProgressionLTR ? arrowL : arrowR
 		style:UIBarButtonItemStylePlain
 		target:self
 		action:@selector(onClickPrev)];
 
-	if (m_currentPageProgressionIsLTR) {
+	if (self.epubReadingOptions.isPageProgressionLTR) {
 		[items addObject:itemPrev];
 		[items addObject:itemFixed];
 		[items addObject:itemNext];
@@ -378,20 +381,18 @@
 	label.font = [UIFont systemFontOfSize:16];
 	label.textColor = [UIColor blackColor];
 
-	if (m_currentPageCount == 0) {
+    EPubOpenPage *currentOpenPageMin = self.epubReadingOptions.currentOpenPageMin;
+    NSUInteger openPages = self.epubReadingOptions.currentOpenPageCount;
+
+	if (!openPages) {
 		label.text = @"";
 		itemNext.enabled = NO;
 		itemPrev.enabled = NO;
 	}
 	else {
-		label.text = LocStr(@"PAGE_X_OF_Y", m_currentPageIndex + 1, m_currentPageCount);
-
-		itemNext.enabled = !(
-			(m_currentSpineItemIndex + 1 == m_package.spineItems.count) &&
-			(m_currentPageIndex + m_currentOpenPageCount + 1 > m_currentPageCount)
-		);
-
-		itemPrev.enabled = !(m_currentSpineItemIndex == 0 && m_currentPageIndex == 0);
+		label.text = LocStr(@"PAGE_X_OF_Y", currentOpenPageMin.spineItemPageIndex + 1, currentOpenPageMin.spineItemPageCount);
+		itemNext.enabled = [self.epubReadingOptions canNavigateForward];
+		itemPrev.enabled = [self.epubReadingOptions canNavigateBack];
 	}
 
 	[label sizeToFit];
@@ -556,33 +557,12 @@
 
 			NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data
 				options:0 error:&error];
+            if (error) {
+                NSLog(@"Cannot convert data into JSON in %s", __FUNCTION__);
+                return NO;
+            }
 
-			NSString *direction = [dict objectForKey:@"pageProgressionDirection"];
-
-			if ([direction isKindOfClass:[NSString class]]) {
-				m_currentPageProgressionIsLTR = ![direction isEqualToString:@"rtl"];
-			}
-			else {
-				m_currentPageProgressionIsLTR = YES;
-			}
-
-			m_currentOpenPageCount = 0;
-
-			for (NSDictionary *pageDict in [dict objectForKey:@"openPages"]) {
-				m_currentOpenPageCount++;
-
-				if (m_currentOpenPageCount == 1) {
-					NSNumber *number = [pageDict objectForKey:@"spineItemPageCount"];
-					m_currentPageCount = number.intValue;
-
-					number = [pageDict objectForKey:@"spineItemPageIndex"];
-					m_currentPageIndex = number.intValue;
-
-					number = [pageDict objectForKey:@"spineItemIndex"];
-					m_currentSpineItemIndex = number.intValue;
-				}
-			}
-
+            self.epubReadingOptions = [EPubReadingOptions epubReadingOptionsFromDictionary:dict];
 			m_webView.hidden = NO;
 			[self updateToolbar];
 			return shouldLoad;

@@ -43,11 +43,6 @@
 {
 	@private UIAlertView *m_alertAddBookmark;
 	@private RDContainer *m_container;
-	@private int m_currentOpenPageCount;
-	@private int m_currentPageCount;
-	@private int m_currentPageIndex;
-	@private BOOL m_currentPageProgressionIsLTR;
-	@private int m_currentSpineItemIndex;
 	@private NSString *m_initialCFI;
 	@private BOOL m_moIsPlaying;
 	@private RDNavigationElement *m_navElement;
